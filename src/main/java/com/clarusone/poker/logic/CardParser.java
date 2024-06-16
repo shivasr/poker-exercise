@@ -8,6 +8,7 @@ import java.util.Optional;
  * Card Parser for analysis
  */
 public class CardParser {
+
     public static Card toCard(String card) {
         assert Optional.ofNullable(card).isPresent();
 

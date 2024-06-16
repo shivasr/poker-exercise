@@ -16,4 +16,8 @@ public class PokerHand implements Comparable<PokerHand> {
          */
         throw new UnsupportedOperationException("Hand comparison not implemented");
     }
+
+    public String getFiveCards() {
+        return fiveCards;
+    }
 }
