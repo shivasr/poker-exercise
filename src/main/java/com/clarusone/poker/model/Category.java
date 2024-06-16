@@ -4,7 +4,7 @@ package com.clarusone.poker.model;
  * Categories listed in decreasing order of their weightage.
  * Eg: FIVE_OF_A_KIND is higher rank than STRAIGHT_FLUSH
  */
-public enum Categories {
+public enum Category {
     ROYAL_FLUSH,
     STRAIGHT_FLUSH,
     FOUR_OF_A_KIND,
