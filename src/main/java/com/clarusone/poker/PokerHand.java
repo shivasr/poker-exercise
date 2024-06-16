@@ -2,7 +2,10 @@ package com.clarusone.poker;
 
 public class PokerHand implements Comparable<PokerHand> {
 
+    private final String fiveCards;
+
     public PokerHand(String fiveCards) {
+        this.fiveCards = fiveCards;
     }
 
     @Override
