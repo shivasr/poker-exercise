@@ -20,22 +20,25 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
     @Override
     public Category analyzeHand(PokerHand hand) {
 
+        System.out.println(hand.getSortedCards());
         var cardsGroup = hand.getSortedCards().stream()
                 .collect(Collectors.groupingBy(Card::getSuit));
 
         var cardsSameKind = hand.getSortedCards().stream()
                 .collect(Collectors.groupingBy(Card::getValue));
 
+        LinkedList<Integer> sequencesSet = CardUtils.findSequencesSet(hand.getSortedCards());
+
         if (cardsGroup.size() == 1) {
-            return processAllSameSuit(hand.getSortedCards());
+            return processAllSameSuit(hand.getSortedCards(), sequencesSet);
         } else if (!cardsSameKind.isEmpty()) {
-            return processCardsWithSameKind(cardsSameKind);
+            return processCardsWithSameKind(cardsSameKind, sequencesSet);
         }
 
         return Category.HIGH_CARD;
     }
 
-    private Category processAllSameSuit(SequencedSet<Card> cardsList) {
+    private Category processAllSameSuit(SequencedSet<Card> cardsList, LinkedList<Integer> sequencesSet) {
         var maxSum = Card.VALUE_TO_NUMBER_LOOKUP.get("A")
                 + Card.VALUE_TO_NUMBER_LOOKUP.get("K")
                 + Card.VALUE_TO_NUMBER_LOOKUP.get("Q")
@@ -45,8 +48,6 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
         Map<String, Integer> cardsSuitToSum = cardsList.stream()
                 .collect(Collectors.groupingBy(Card::getSuit,
                         Collectors.summingInt(Card::getInternalValue)));
-
-        LinkedList<Integer> sequencesSet = CardUtils.findSequencesSet(cardsList);
 
         if (sequencesSet.size() >= 2) {
             return Category.FLUSH;
@@ -63,7 +64,7 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
         return Category.ONE_PAIR;
     }
 
-    private Category processCardsWithSameKind(Map<String, List<Card>> cardsList) {
+    private Category processCardsWithSameKind(Map<String, List<Card>> cardsList, LinkedList<Integer> sequencesSet) {
         List<Integer> counts = cardsList.values().stream()
                 .map(List::size)
                 .toList();
@@ -78,6 +79,8 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
             return Category.TWO_PAIR;
         } else if (counts.size() == 4) {
             return Category.ONE_PAIR;
+        } else if (sequencesSet.size() == 1) {
+            return Category.STRAIGHT;
         }
 
         return Category.HIGH_CARD;
