@@ -19,8 +19,6 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
 
     @Override
     public Category analyzeHand(PokerHand hand) {
-
-        System.out.println(hand.getSortedCards());
         var cardsGroup = hand.getSortedCards().stream()
                 .collect(Collectors.groupingBy(Card::getSuit));
 
