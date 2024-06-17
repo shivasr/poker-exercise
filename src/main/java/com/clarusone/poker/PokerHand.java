@@ -7,6 +7,7 @@ import com.clarusone.poker.logic.impl.DefaultCategoryAnalyzer;
 import com.clarusone.poker.logic.impl.DefaultCategoryWeightageProvider;
 import com.clarusone.poker.model.Card;
 import com.clarusone.poker.model.Category;
+import com.clarusone.poker.utils.CardUtils;
 
 import java.util.Comparator;
 import java.util.SequencedSet;
@@ -44,14 +45,16 @@ public class PokerHand implements Comparable<PokerHand> {
         Category thisHandCategory = categoryAnalyzer.analyzeHand(this);
         Category opponentHandCategory = categoryAnalyzer.analyzeHand(opponentHand);
 
+        System.out.println(thisHandCategory + ":" + this.getSortedCards());
+        System.out.println(opponentHandCategory + ":" + opponentHand.getSortedCards());
+
         var thisHandWeightage = provider.getWeightage(thisHandCategory);
         var opponentHandWeightage = provider.getWeightage(opponentHandCategory);
 
         var comparison = Integer.compare(thisHandWeightage, opponentHandWeightage);
 
         if (comparison == 0) { // If both hands score the same, then check the highest value
-            return Integer.compare(this.sortedCards.getLast().getInternalValue(),
-                    opponentHand.sortedCards.getLast().getInternalValue());
+            return CardUtils.deepCompareInternalCards(this, opponentHand);
         }
 
         return comparison;
