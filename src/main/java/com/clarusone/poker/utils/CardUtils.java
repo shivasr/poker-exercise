@@ -49,8 +49,6 @@ public class CardUtils {
         var cardsSameKind = thisHand.getSortedCards().stream()
                 .collect(Collectors.groupingBy(Card::getValue));
 
-
-
         int highestInternalValue;
 
         if (cardsSameKind.size() < 5) { // There are at least 1 group with with same kind
