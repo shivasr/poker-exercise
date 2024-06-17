@@ -1,6 +1,7 @@
 package com.clarusone.poker.logic;
 
 import com.clarusone.poker.PokerHand;
+import com.clarusone.poker.logic.impl.DefaultCategoryAnalyzer;
 import com.clarusone.poker.model.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ class DefaultCategoryAnalyzerTest {
         String hand = "AS QS TS KS JS";
         Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
         Objects.requireNonNull(category);
+
         assert Category.ROYAL_FLUSH == category;
     }
 
@@ -29,6 +31,20 @@ class DefaultCategoryAnalyzerTest {
         String hand = "KD QD JD TD 9D";
         Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
         assert category == Category.STRAIGHT_FLUSH;
+    }
+
+    @Test
+    void analyzeHandFlushes() {
+        String hand = "AS 3S 4S 8S 2S";
+        Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
+        assert category == Category.FLUSH;
+    }
+
+    @Test
+    void analyzeHandAnotherFlushes() {
+        String hand = "2H 3H 5H 6H 7H";
+        Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
+        assert category == Category.FLUSH;
     }
 
     @Test
@@ -47,7 +63,7 @@ class DefaultCategoryAnalyzerTest {
 
     @Test
     void analyzeThreeOfAKind() {
-        String hand = "2S AH 2H AS AC";
+        String hand = "AH AC 5H 6H AS";
         Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
         assert category == Category.THREE_OF_A_KIND;
     }
@@ -63,6 +79,6 @@ class DefaultCategoryAnalyzerTest {
     void analyzeSinglePair() {
         String hand = "AH AC 5H 6H 7S";
         Category category = categoryAnalyzer.analyzeHand(new PokerHand(hand));
-        assert category == Category.TWO_PAIR;
+        assert category == Category.ONE_PAIR;
     }
 }
