@@ -45,6 +45,9 @@ public class PokerHand implements Comparable<PokerHand> {
         Category thisHandCategory = categoryAnalyzer.analyzeHand(this);
         Category opponentHandCategory = categoryAnalyzer.analyzeHand(opponentHand);
 
+        System.out.println(thisHandCategory + ":" + this.getSortedCards());
+        System.out.println(opponentHandCategory + ":" + opponentHand.getSortedCards());
+
         var thisHandWeightage = provider.getWeightage(thisHandCategory);
         var opponentHandWeightage = provider.getWeightage(opponentHandCategory);
 

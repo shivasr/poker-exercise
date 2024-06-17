@@ -53,9 +53,11 @@ public class CardUtils {
 
         int highestInternalValue;
 
-        if (cardsSameKind.size() == 2) { // There are at least 3 cards with same rank
+        if (cardsSameKind.size() < 5) { // There are at least 3 cards with same rank
+            int size = 5 - cardsSameKind.size();  // As per pigeon hole principle, if groups are lesser, at lease pne bin has more than one
+
             highestInternalValue = cardsSameKind.keySet().stream()
-                    .filter(key -> cardsSameKind.get(key).size() >= 3)
+                    .filter(key -> cardsSameKind.get(key).size() >= size)
                     .mapToInt(key -> cardsSameKind.get(key).getLast().getInternalValue())
                     .findFirst().orElse(0);
         } else {
