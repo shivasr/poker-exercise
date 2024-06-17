@@ -2,23 +2,28 @@ package com.clarusone.poker.utils;
 
 import com.clarusone.poker.model.Card;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CardUtils {
 
-    public static Set<Integer> findSequencesSet(List<Card> cardsList) {
-        Set<Integer> sequencesSet = new HashSet<>();
-        int numberOfCardsInSequence = 0;
+    public static LinkedList<Integer> findSequencesSet(SequencedSet<Card> cardsList) {
+        LinkedList<Integer> sequencesSet = new LinkedList<>();
 
-        for (int i = 1; i < cardsList.size(); i++) {
-            if (cardsList.get(i).getInternalValue() - cardsList.get(i - 1).getInternalValue() == 1) {
+        int numberOfCardsInSequence = 1;
+        var iterator = cardsList.iterator();
+        int current = iterator.next().getInternalValue();
+
+        while (iterator.hasNext()) {
+            int next = iterator.next().getInternalValue();
+
+            if (next - current == 1) {
                 numberOfCardsInSequence ++;
             } else {
                 sequencesSet.add(numberOfCardsInSequence);
-                numberOfCardsInSequence = 0;
+                numberOfCardsInSequence = 1;
             }
+
+            current = next;
         }
 
         sequencesSet.add(numberOfCardsInSequence);

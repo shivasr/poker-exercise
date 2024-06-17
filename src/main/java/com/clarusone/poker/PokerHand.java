@@ -1,23 +1,63 @@
 package com.clarusone.poker;
 
+import com.clarusone.poker.logic.CardsSorter;
+import com.clarusone.poker.logic.CategoryAnalyzer;
+import com.clarusone.poker.logic.CategoryWeightageProvider;
+import com.clarusone.poker.logic.impl.DefaultCategoryAnalyzer;
+import com.clarusone.poker.logic.impl.DefaultCategoryWeightageProvider;
+import com.clarusone.poker.model.Card;
+import com.clarusone.poker.model.Category;
+
+import java.util.Comparator;
+import java.util.SequencedSet;
+
 public class PokerHand implements Comparable<PokerHand> {
 
-    private final String fiveCards;
+    private final SequencedSet<Card> sortedCards;
 
+    private final CategoryAnalyzer categoryAnalyzer;
+
+    private final CategoryWeightageProvider provider;
+
+    /**
+     * Constructor
+     *
+     * @param fiveCards Five Cards <Value><Suit> separated by space eg: 4S  5H 6H TS AC
+     */
     public PokerHand(String fiveCards) {
-        this.fiveCards = fiveCards;
+        sortedCards = CardsSorter.sortCards(fiveCards);
+        categoryAnalyzer = new DefaultCategoryAnalyzer();
+        provider = new DefaultCategoryWeightageProvider();
     }
 
+    /**
+     * @see Comparator
+     *
+     * @param opponentHand the object to be compared.
+     * @return
+     *          > 0 if this hand ranks higher than the opponent
+     *          = 0 if this hand ranks same as the opponent
+     *          < 0 if this hand ranks lesser than the opponent
+     */
     @Override
     public int compareTo(PokerHand opponentHand) {
-        /*
-        TODO Delete the line below and implement this method to return a positive integer, a negative integer, or zero 
-        if this hand is better than, worse than, or the same as the opponent's hand
-         */
-        throw new UnsupportedOperationException("Hand comparison not implemented");
+        Category thisHandCategory = categoryAnalyzer.analyzeHand(this);
+        Category opponentHandCategory = categoryAnalyzer.analyzeHand(opponentHand);
+
+        var thisHandWeightage = provider.getWeightage(thisHandCategory);
+        var opponentHandWeightage = provider.getWeightage(opponentHandCategory);
+
+        var comparison = Integer.compare(thisHandWeightage, opponentHandWeightage);
+
+        if (comparison == 0) { // If both hands score the same, then check the highest value
+            return Integer.compare(this.sortedCards.getLast().getInternalValue(),
+                    opponentHand.sortedCards.getLast().getInternalValue());
+        }
+
+        return comparison;
     }
 
-    public String getFiveCards() {
-        return fiveCards;
+    public SequencedSet<Card> getSortedCards() {
+        return sortedCards;
     }
 }
