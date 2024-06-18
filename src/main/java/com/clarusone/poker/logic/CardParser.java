@@ -1,23 +1,31 @@
 package com.clarusone.poker.logic;
 
+import com.clarusone.poker.exception.PokerException;
 import com.clarusone.poker.model.Card;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Card Parser for analysis
  */
 public class CardParser {
 
+    private CardParser() {
+        // Private Constructor
+    }
+
     public static Card toCard(String card) {
-        assert Optional.ofNullable(card).isPresent();
+        Objects.requireNonNull(card);
 
         String[] tokens = card.split("");
-        assert tokens.length == 2;
 
-        String value = tokens[0];
-        String suit = tokens[1];
+        if (tokens.length == 2) {
+            String value = tokens[0];
+            String suit = tokens[1];
 
-        return new Card(value, suit);
+            return new Card(value, suit);
+        }
+
+        throw new PokerException("Invalid card: " + card);
     }
 }
