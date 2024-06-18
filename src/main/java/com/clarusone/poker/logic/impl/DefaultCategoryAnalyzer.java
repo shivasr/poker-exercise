@@ -6,10 +6,7 @@ import com.clarusone.poker.model.Card;
 import com.clarusone.poker.model.Category;
 import com.clarusone.poker.utils.CardUtils;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.SequencedSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +22,7 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
         var cardsSameKind = hand.getSortedCards().stream()
                 .collect(Collectors.groupingBy(Card::getValue));
 
-        LinkedList<Integer> sequencesSet = CardUtils.findSequencesSet(hand.getSortedCards());
+        Deque<Integer> sequencesSet = CardUtils.findSequencesSet(hand.getSortedCards());
 
         if (cardsGroup.size() == 1) {
             return processAllSameSuit(hand.getSortedCards(), sequencesSet);
@@ -36,7 +33,7 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
         return Category.HIGH_CARD;
     }
 
-    private Category processAllSameSuit(SequencedSet<Card> cardsList, LinkedList<Integer> sequencesSet) {
+    private Category processAllSameSuit(SequencedSet<Card> cardsList, Deque<Integer> sequencesSet) {
 
 
         Map<String, Integer> cardsSuitToSum = cardsList.stream()
@@ -58,7 +55,7 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
         return Category.ONE_PAIR;
     }
 
-    private Category processCardsWithSameKind(Map<String, List<Card>> cardsList, LinkedList<Integer> sequencesSet) {
+    private Category processCardsWithSameKind(Map<String, List<Card>> cardsList, Deque<Integer> sequencesSet) {
         List<Integer> counts = cardsList.values().stream()
                 .map(List::size)
                 .toList();

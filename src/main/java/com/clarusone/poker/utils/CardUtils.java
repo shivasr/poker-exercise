@@ -2,13 +2,18 @@ package com.clarusone.poker.utils;
 
 import com.clarusone.poker.model.Card;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.SequencedSet;
 
 public class CardUtils {
 
-    public static LinkedList<Integer> findSequencesSet(SequencedSet<Card> cardsList) {
-        LinkedList<Integer> sequencesSet = new LinkedList<>();
+    private CardUtils() {
+        // Private Constructor
+    }
+
+    public static Deque<Integer> findSequencesSet(SequencedSet<Card> cardsList) {
+        Deque<Integer> sequencesSet = new LinkedList<>();
 
         int numberOfCardsInSequence = 1;
         var iterator = cardsList.iterator();
