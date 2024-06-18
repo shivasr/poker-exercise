@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class DefaultCategoryWeightageProviderTest {
 
     CategoryWeightageProvider provider = new DefaultCategoryWeightageProvider();
@@ -21,7 +23,7 @@ class DefaultCategoryWeightageProviderTest {
 
         int actualWeightage = provider.getWeightage(Category.valueOf(category));
 
-        assert expected == actualWeightage;
+        assertEquals(expected, actualWeightage);
 
     }
 }
