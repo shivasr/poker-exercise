@@ -9,6 +9,7 @@ import com.clarusone.poker.model.Card;
 import com.clarusone.poker.model.Category;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.SequencedSet;
 
@@ -62,5 +63,23 @@ public class PokerHand implements Comparable<PokerHand> {
         if (Optional.ofNullable(pokerHand.handCategory).isEmpty()) {
             pokerHand.handCategory = categoryAnalyzer.analyzeHand(pokerHand);
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof PokerHand opponentHand) {
+            computeHandCategoryIfRequired(this);
+            computeHandCategoryIfRequired(opponentHand);
+
+            return this.handCategory == opponentHand.handCategory;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sortedCards, categoryAnalyzer, handComparator, handCategory);
     }
 }

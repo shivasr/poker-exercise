@@ -1,12 +1,10 @@
 package com.clarusone.poker.logic;
 
+import com.clarusone.poker.exception.PokerException;
 import com.clarusone.poker.model.Card;
 import com.clarusone.poker.model.Suit;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -14,9 +12,13 @@ import java.util.stream.Collectors;
  */
 public class CardsSorter {
 
-    public static final int REQUIRED_NUMBER_OF_CARDS = 5;
+    private CardsSorter() {
+        // Private Constructor
+    }
 
-    public static LinkedHashSet<Card> sortCards(String fiveCard) {
+    private static final int REQUIRED_NUMBER_OF_CARDS = 5;
+
+    public static SequencedSet<Card> sortCards(String fiveCard) {
         Comparator<Card> comparator = (a, b) -> {
             if (Objects.equals(a.getValue(), b.getValue())) {
                 Suit suitA = Suit.valueOf(a.getSuit());
@@ -31,7 +33,7 @@ public class CardsSorter {
         String[] cardTokens = fiveCard.split(" ");
 
         if (cardTokens.length != REQUIRED_NUMBER_OF_CARDS) {
-            throw new RuntimeException(String.format("A hand must exactly have %s cards.", 5));
+            throw new PokerException(String.format("A hand must exactly have %s cards.", 5));
         }
 
         return Arrays.stream(cardTokens)
