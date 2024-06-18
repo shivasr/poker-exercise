@@ -37,11 +37,7 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
     }
 
     private Category processAllSameSuit(SequencedSet<Card> cardsList, LinkedList<Integer> sequencesSet) {
-        var maxSum = Card.VALUE_TO_NUMBER_LOOKUP.get("A")
-                + Card.VALUE_TO_NUMBER_LOOKUP.get("K")
-                + Card.VALUE_TO_NUMBER_LOOKUP.get("Q")
-                + Card.VALUE_TO_NUMBER_LOOKUP.get("J")
-                + Card.VALUE_TO_NUMBER_LOOKUP.get("T");
+
 
         Map<String, Integer> cardsSuitToSum = cardsList.stream()
                 .collect(Collectors.groupingBy(Card::getSuit,
@@ -53,9 +49,9 @@ public class DefaultCategoryAnalyzer implements CategoryAnalyzer {
 
         int sum = cardsSuitToSum.values().stream().findFirst().orElse(0);
 
-        if (cardsSuitToSum.size() == 1 && sum == maxSum) {
+        if (cardsSuitToSum.size() == 1 && sum == Card.getMaxSumOfFive()) {
             return Category.ROYAL_FLUSH;
-        } else if (sequencesSet.size() == 1 && sum != maxSum) {
+        } else if (sequencesSet.size() == 1 && sum != Card.getMaxSumOfFive()) {
             return Category.STRAIGHT_FLUSH;
         }
 

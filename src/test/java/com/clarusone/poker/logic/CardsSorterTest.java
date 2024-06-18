@@ -3,10 +3,11 @@ package com.clarusone.poker.logic;
 import com.clarusone.poker.model.Card;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.SequencedSet;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CardsSorterTest {
 
@@ -14,10 +15,10 @@ class CardsSorterTest {
     void sortCards() {
         String testHand = "KS KH KD 2S 2C";
 
-        LinkedHashSet<Card> cards = CardsSorter.sortCards(testHand);
+        SequencedSet<Card> cards = CardsSorter.sortCards(testHand);
 
         Objects.requireNonNull(cards);
-        assert cards.size() == 5;
+        assertEquals(5, cards.size());
     }
 
     @Test

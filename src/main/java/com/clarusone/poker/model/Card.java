@@ -8,21 +8,23 @@ import java.util.Map;
  */
 public class Card {
 
-    public static final Map<String, Integer> VALUE_TO_NUMBER_LOOKUP = new HashMap<>(){{
-        put("2", 2);
-        put("3", 3);
-        put("4", 4);
-        put("5", 5);
-        put("6", 6);
-        put("7", 7);
-        put("8", 8);
-        put("9", 9);
-        put("T", 10);
-        put("J", 11);
-        put("Q", 12);
-        put("K", 13);
-        put("A", 14);
-    }};
+    private static final Map<String, Integer> VALUE_TO_NUMBER_LOOKUP = HashMap.newHashMap(13);
+
+    static {
+        VALUE_TO_NUMBER_LOOKUP.put("2", 2);
+        VALUE_TO_NUMBER_LOOKUP.put("3", 3);
+        VALUE_TO_NUMBER_LOOKUP.put("4", 4);
+        VALUE_TO_NUMBER_LOOKUP.put("5", 5);
+        VALUE_TO_NUMBER_LOOKUP.put("6", 6);
+        VALUE_TO_NUMBER_LOOKUP.put("7", 7);
+        VALUE_TO_NUMBER_LOOKUP.put("8", 8);
+        VALUE_TO_NUMBER_LOOKUP.put("9", 9);
+        VALUE_TO_NUMBER_LOOKUP.put("T", 10);
+        VALUE_TO_NUMBER_LOOKUP.put("J", 11);
+        VALUE_TO_NUMBER_LOOKUP. put("Q", 12);
+        VALUE_TO_NUMBER_LOOKUP.put("K", 13);
+        VALUE_TO_NUMBER_LOOKUP.put("A", 14);
+    }
 
     final String value;
 
@@ -51,5 +53,13 @@ public class Card {
 
     public int getInternalValue() {
         return internalValue;
+    }
+
+    public static int getMaxSumOfFive() {
+        return Card.VALUE_TO_NUMBER_LOOKUP.get("A")
+                + Card.VALUE_TO_NUMBER_LOOKUP.get("K")
+                + Card.VALUE_TO_NUMBER_LOOKUP.get("Q")
+                + Card.VALUE_TO_NUMBER_LOOKUP.get("J")
+                + Card.VALUE_TO_NUMBER_LOOKUP.get("T");
     }
 }
